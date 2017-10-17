@@ -278,6 +278,7 @@ you should place your code here."
                            "--trailing-comma" "es5"
                            "--write"
                            ))
+  (setq helm-exit-idle-delay 0)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
