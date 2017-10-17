@@ -49,6 +49,7 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
    '(
+     docker
      prettier-js
      ng2-mode
      rjsx-mode
