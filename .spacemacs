@@ -343,7 +343,7 @@ you should place your code here."
                            "--write"
                            ))
   (setq helm-exit-idle-delay 0)
-  (spacemacs/toggle-truncate-lines-on)
+  (add-hook 'hack-local-variables-hook (lambda () (setq truncate-lines t)))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
