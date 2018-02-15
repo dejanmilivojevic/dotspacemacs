@@ -343,6 +343,7 @@ you should place your code here."
                            "--write"
                            ))
   (setq helm-exit-idle-delay 0)
+  (spacemacs/toggle-truncate-lines-on)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
