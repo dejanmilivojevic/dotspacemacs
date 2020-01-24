@@ -34,13 +34,13 @@ values."
    '(
      ;; my-reasonml
      ;; my-ng2
-     ;; my-react
-     ;; my-docker
+     my-react
+     my-docker
      ;; my-edbi
      ;; ruby
      ;; elixir
      ;; sql
-     my-treemacs
+     ;; my-treemacs
      ;; python
      ;; typescript
      restclient
