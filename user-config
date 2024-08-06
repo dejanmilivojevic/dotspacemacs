@@ -1,23 +1,65 @@
-(defun chomp-end (str)
-  "Chomp tailing whitespace from STR."
-  (replace-regexp-in-string (rx (* (any " \t\n")) eos)
-                            ""
-                            str))
+;; add option to babel :noconfirm t
+(defun my-org-confirm-babel-evaluate (lang body)
+	(let ((info (org-babel-get-src-block-info)))
+		(not (assoc-string ":noconfirm" (nth 2 info) t))))
+(setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
 
-(let ((support-base-dir (concat (replace-regexp-in-string "refmt" "" (file-truename (chomp-end (shell-command-to-string "which refmt")))) ".."))
-      (merlin-base-dir (concat (replace-regexp-in-string "ocamlmerlin" "" (file-truename (chomp-end (shell-command-to-string "which ocamlmerlin")))) "..")))
-  ;; Add npm merlin.el to the emacs load path and tell emacs where to find ocamlmerlin
-  (add-to-list 'load-path (concat merlin-base-dir "/share/emacs/site-lisp/"))
-  (setq merlin-command (concat merlin-base-dir "/bin/ocamlmerlin"))
+;; (defun copy-selected-text (start end)
+;;   (interactive "r")
+;;   (if (use-region-p)
+;;       (let* ((text (buffer-substring-no-properties start end))
+;;              (escaped-text (replace-regexp-in-string "'" "''" text)))
+;;         (shell-command (concat "echo  '" escaped-text "'  | clip.exe")))))
 
-  ;; Add npm reason-mode to the emacs load path and tell emacs where to find refmt
-  (add-to-list 'load-path (concat support-base-dir "/share/emacs/site-lisp"))
-  (setq refmt-command (concat support-base-dir "/bin/refmt")))
+(defun copy-selected-text (start end)
+  (interactive "r")
+  (if (use-region-p)
+      (let* ((text (buffer-substring-no-properties start end))
+             ;; Correctly escape single quotes for shell command
+             ;; First, replace single quote with '\'' (end quote, escaped quote, start quote)
+             ;; Emacs Lisp requires doubling backslashes to represent them literally
+             (escaped-text (replace-regexp-in-string "'" "'\\\\''" text)))
+        ;; Use printf for more reliable handling of special characters
+        (shell-command (concat "printf '%s' '" escaped-text "' | clip.exe")))))
 
-(require 'reason-mode)
-(require 'merlin)
-(add-hook 'reason-mode-hook (lambda ()
-                              (add-hook 'before-save-hook 'refmt-before-save)
-                              (merlin-mode)))
+(setq exec-path (append exec-path '("/home/madman/.nvm/versions/node/v18.14.0/bin")))
 
-(setq merlin-ac-setup t)
+(add-hook 'hack-local-variables-hook #'spacemacs/toggle-truncate-lines-on)
+
+(require 'company-tabnine)
+(add-to-list 'company-backends 'company-tabnine)
+
+
+(require 'python)
+(setq chatgpt-repo-path (expand-file-name "chatgpt/" quelpa-build-dir))
+(global-set-key (kbd "C-c q") #'chatgpt-query)
+
+
+;; (setq powerline-image-apple-rgb t)
+(setq create-lockfiles nil)
+(setq dired-dwim-target t)
+
+;; this enables helm autocomplete on tab if indent is not needed
+(setq tab-always-indent 'complete)
+
+;; (add-hook 'js2-mode-hook 'prettier-js-mode)
+;; (add-hook 'web-mode-hook 'prettier-js-mode)
+;; (add-hook 'js2-mode-hook 'flycheck-mode)
+;; (setq prettier-js-args '(
+;;                          "--single-quote"
+;;                          "--use-tabs"
+;;                          "--trailing-comma" "es5"
+;;                          "--write"
+;;                          ))
+;; (setq helm-exit-idle-delay 0)
+
+;; (dap-register-debug-template "Rust::GDB Run Configuration"
+;;                              (list :type "gdb"
+;;                                    :request "launch"
+;;                                    :name "GDB::Run"
+;;                                    :gdbpath "rust-gdb"
+;;                                    :target nil
+;;                                    :cwd nil))
+
+(setenv "LLDB_DEBUGSERVER_PATH" "/usr/bin/lldb-server-14.0.0")
+
