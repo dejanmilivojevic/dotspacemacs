@@ -69,7 +69,8 @@ This function should only modify configuration layer settings."
      better-defaults
      emacs-lisp
      (git :variables
-          magit-diff-refine-hunk nil)
+          magit-diff-refine-hunk nil
+          git-enable-magit-delta-plugin t)
      (markdown :variables
                markdown-live-preview-engine 'vmd
                markdown-command "/usr/bin/pandoc")
