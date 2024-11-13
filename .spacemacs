@@ -69,8 +69,8 @@ This function should only modify configuration layer settings."
      better-defaults
      emacs-lisp
      (git :variables
-          magit-diff-refine-hunk nil
-          git-enable-magit-delta-plugin t)
+          magit-diff-refine-hunk 'all
+          git-enable-magit-delta-plugin nil)
      (markdown :variables
                markdown-live-preview-engine 'vmd
                markdown-command "/usr/bin/pandoc")
@@ -103,7 +103,7 @@ This function should only modify configuration layer settings."
      themes-megapack
      my-npm-run
      my-org-execute
-     my-diredc
+     ;; my-diredc
      prettier
      graphql
      )

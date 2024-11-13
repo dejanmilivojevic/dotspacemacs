@@ -9,6 +9,12 @@
   "Name of the Org file to execute blocks from within the project root."
   :type 'string)
 
+;; add option to babel :noconfirm t
+(defun org-execute-confirm-babel-evaluate (lang body)
+  (let ((info (org-babel-get-src-block-info)))
+    (not (assoc-string ":noconfirm" (nth 2 info) t))))
+(setq org-confirm-babel-evaluate 'org-execute-confirm-babel-evaluate)
+
 (defmacro org-execute--projectile-wrapper (wrapper-name base-function file-var-name)
   "Define a new function WRAPPER-NAME that wraps BASE-FUNCTION.
 FILE-VAR-NAME is a symbol for the variable name that will hold the file path.
@@ -47,8 +53,8 @@ The new function will automatically resolve the file path using Projectile and c
       (error "Results block for %s not found" block-name))))
 
 (org-execute--projectile-wrapper org-execute-block-and-get-results-projectile-fn
-                            org-execute-block-and-get-results-fn
-                            full-path)
+                                 org-execute-block-and-get-results-fn
+                                 full-path)
 
 (defun org-execute-get-runnable (file-name)
   "Search FILE-NAME for blocks named with '#+NAME: run-something', capture text between #+NAME and #+begin_src (case-insensitive), and return a list of tuples (name . description)."
@@ -61,20 +67,20 @@ The new function will automatically resolve the file path using Projectile and c
         (let* ((block-name (match-string 1))
                start-pos end-pos description)
           (save-excursion (let ((case-fold-search t))
-            (forward-line -1)
-            (if (looking-at ".*END_COMMENT.*")
-                (progn
-                  (setq end-pos (point))
-                  (re-search-backward "#\\+BEGIN_COMMENT" nil t)
-                  (forward-line 1)
-                  (setq start-pos (point))
-                  (setq description (string-trim (buffer-substring-no-properties start-pos end-pos))))
-                (progn
-                 (setq description ""))
-            )
-            (forward-line 2)
-            (push (cons block-name description) runnable-blocks)
-          ))))
+                            (forward-line -1)
+                            (if (looking-at ".*END_COMMENT.*")
+                                (progn
+                                  (setq end-pos (point))
+                                  (re-search-backward "#\\+BEGIN_COMMENT" nil t)
+                                  (forward-line 1)
+                                  (setq start-pos (point))
+                                  (setq description (string-trim (buffer-substring-no-properties start-pos end-pos))))
+                              (progn
+                                (setq description ""))
+                              )
+                            (forward-line 2)
+                            (push (cons block-name description) runnable-blocks)
+                            ))))
       (nreverse runnable-blocks))))
 
 (org-execute--projectile-wrapper org-execute-get-runnable-projectile
@@ -91,7 +97,7 @@ The new function will automatically resolve the file path using Projectile and c
 
 
 (defun eshell/prj-run (command &rest args)
-  "Eshell command wrapper for `org-execute-block-and-get-results-projectile`, 
+  "Eshell command wrapper for `org-execute-block-and-get-results-projectile`,
    taking a command and optional args."
   (let ((command-string (if (> (length args) 0)
                             (format "%s(%s)" command
@@ -156,8 +162,8 @@ The new function will automatically resolve the file path using Projectile and c
                            ))))
             ;; Print the output string to Eshell
             (eshell-print (concat output "\n")))))))
-    ;; Ensure the output is displayed immediately
-    (eshell-flush))
+  ;; Ensure the output is displayed immediately
+  (eshell-flush))
 
 (defun pcomplete/org-execute-block-and-get-results ()
   "Custom pcomplete completion for `org-execute-block-and-get-results` command."

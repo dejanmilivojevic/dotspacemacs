@@ -1,15 +1,16 @@
-;; add option to babel :noconfirm t
-(defun my-org-confirm-babel-evaluate (lang body)
-	(let ((info (org-babel-get-src-block-info)))
-		(not (assoc-string ":noconfirm" (nth 2 info) t))))
-(setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+(setq mac-option-key-is-meta nil
+      mac-command-key-is-meta t
+      mac-command-modifier 'meta
+      mac-option-modifier 'super)
 
-;; (defun copy-selected-text (start end)
-;;   (interactive "r")
-;;   (if (use-region-p)
-;;       (let* ((text (buffer-substring-no-properties start end))
-;;              (escaped-text (replace-regexp-in-string "'" "''" text)))
-;;         (shell-command (concat "echo  '" escaped-text "'  | clip.exe")))))
+(setq treesit-font-lock-level 4)
+
+;; this enables helm autocomplete on tab if indent is not needed
+(setq tab-always-indent 'complete)
+
+(add-hook 'typescript-tsx-mode-hook 'prettier-js-mode)
+(add-hook 'typescript-ts-mode-hook 'prettier-js-mode)
+(add-hook 'tsx-ts-mode 'prettier-js-mode)
 
 (defun copy-selected-text (start end)
   (interactive "r")
@@ -30,17 +31,14 @@
 (add-to-list 'company-backends 'company-tabnine)
 
 
-(require 'python)
-(setq chatgpt-repo-path (expand-file-name "chatgpt/" quelpa-build-dir))
-(global-set-key (kbd "C-c q") #'chatgpt-query)
+;; (require 'python)
+;; (setq chatgpt-repo-path (expand-file-name "chatgpt/" quelpa-build-dir))
+;; (global-set-key (kbd "C-c q") #'chatgpt-query)
 
 
 ;; (setq powerline-image-apple-rgb t)
 (setq create-lockfiles nil)
 (setq dired-dwim-target t)
-
-;; this enables helm autocomplete on tab if indent is not needed
-(setq tab-always-indent 'complete)
 
 ;; (add-hook 'js2-mode-hook 'prettier-js-mode)
 ;; (add-hook 'web-mode-hook 'prettier-js-mode)
@@ -61,5 +59,4 @@
 ;;                                    :target nil
 ;;                                    :cwd nil))
 
-(setenv "LLDB_DEBUGSERVER_PATH" "/usr/bin/lldb-server-14.0.0")
-
+;; (setenv "LLDB_DEBUGSERVER_PATH" "/usr/bin/lldb-server-14.0.0")
