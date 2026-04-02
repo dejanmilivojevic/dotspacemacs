@@ -27,8 +27,8 @@
 
 (add-hook 'hack-local-variables-hook #'spacemacs/toggle-truncate-lines-on)
 
-(require 'company-tabnine)
-(add-to-list 'company-backends 'company-tabnine)
+;; (require 'company-tabnine)
+;; (add-to-list 'company-backends 'company-tabnine)
 
 
 ;; (require 'python)
