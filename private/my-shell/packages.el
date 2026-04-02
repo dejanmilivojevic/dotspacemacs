@@ -78,6 +78,7 @@
   (use-package eat
     :ensure t
     :config
+    (setq eat-term-name "xterm-256color")
     (eat-eshell-mode)
     (eat-eshell-visual-command-mode)))
 
