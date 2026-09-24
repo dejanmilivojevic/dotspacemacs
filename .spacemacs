@@ -109,6 +109,7 @@ This function should only modify configuration layer settings."
      (dart :variables
            lsp-dart-sdk-dir "/Users/dejan.milivojevic/development/flutter/bin/cache/dart-sdk/")
      aider
+     my-pai
      claude-code
      my-flutter
      my-bloc

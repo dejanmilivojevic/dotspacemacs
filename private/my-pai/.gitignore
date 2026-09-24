@@ -1,0 +1,3 @@
+# pai core and its extensions are git clones of their own repositories
+# (the extensions live in pai/extensions/).  Don't track them here.
+/pai/
